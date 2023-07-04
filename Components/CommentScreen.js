@@ -1,7 +1,15 @@
 import { useEffect, useState } from "react";
-import { View, ActivityIndicator, ScrollView, Text } from "react-native";
+import {
+  View,
+  ActivityIndicator,
+  ScrollView,
+  Text,
+  StyleSheet,
+  Image,
+} from "react-native";
 import RenderHtml from "react-native-render-html";
 import { useWindowDimensions } from "react-native";
+import { Card } from "react-native-paper";
 
 export function Comments({ route }) {
   const [comments, setComments] = useState();
@@ -28,14 +36,36 @@ export function Comments({ route }) {
   return (
     <ScrollView>
       {comments.map((comment) => (
-        <View>
-          <Text style={{ color: "pink" }}>{comment.user.name}</Text>
-          <RenderHtml
-            contentWidth={width}
-            source={{ html: comment.body_html }}
-          />
-        </View>
+        <>
+          <Card style={{ marginBottom: 20 }}>
+            <View>
+              <Image
+                source={comment.user.profile_image}
+                style={styles.image}
+              ></Image>
+              <Text style={styles.title}>{comment.user.name}</Text>
+            </View>
+
+            <Card.Content>
+              <RenderHtml
+                contentWidth={width}
+                source={{ html: comment.body_html }}
+              />
+            </Card.Content>
+          </Card>
+        </>
       ))}
     </ScrollView>
   );
 }
+const styles = StyleSheet.create({
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  image: {
+    width: 30,
+    height: 30,
+    // backgroundColor: "red",
+  },
+});
