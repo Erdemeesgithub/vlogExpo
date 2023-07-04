@@ -9,22 +9,39 @@ import { Comments } from "./Components/CommentScreen";
 import { PaperProvider } from "react-native-paper";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { ClerkProvider, SignedIn, SignedOut } from "@clerk/clerk-expo";
+import SignUpScreen from "./Components/SignupScreen";
+import SignInScreen from "./Components/SignInScreen";
 
 export default function App() {
   const Drawer = createDrawerNavigator();
+  const CLERK_PUBLISHABLE_KEY =
+    "pk_test_bW9yYWwtbW9yYXktNjEuY2xlcmsuYWNjb3VudHMuZGV2JA";
   return (
-    <PaperProvider>
-      <NavigationContainer>
-        <Drawer.Navigator>
-          <Drawer.Screen
-            name="Home"
-            component={Tab}
-            options={{ headerShown: false }}
-          />
-          <Drawer.Screen name="Article" component={Article} />
-        </Drawer.Navigator>
-      </NavigationContainer>
-    </PaperProvider>
+    <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY}>
+      <SignedIn>
+        <PaperProvider>
+          <NavigationContainer>
+            <Drawer.Navigator>
+              <Drawer.Screen
+                name="Home"
+                component={Tab}
+                options={{ headerShown: false }}
+              />
+              <Drawer.Screen name="Article" component={Article} />
+            </Drawer.Navigator>
+          </NavigationContainer>
+        </PaperProvider>
+      </SignedIn>
+      <SignedOut>
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <SignUpScreen />
+          {/* <SignInScreen /> */}
+        </View>
+      </SignedOut>
+    </ClerkProvider>
   );
 }
 
