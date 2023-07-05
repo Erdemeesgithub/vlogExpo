@@ -1,9 +1,11 @@
-import * as React from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View, StyleSheet } from "react-native";
 import { useSignUp } from "@clerk/clerk-expo";
+import { Button, TextInput } from "react-native-paper";
+import React, { useState } from "react";
 
-export default function SignUpScreen() {
+export default function SignUpScreen({ onSignIn }) {
   const { isLoaded, signUp, setActive } = useSignUp();
+  const [error, setError] = useState();
 
   const [emailAddress, setEmailAddress] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -28,7 +30,8 @@ export default function SignUpScreen() {
       // change the UI to our pending section.
       setPendingVerification(true);
     } catch (err) {
-      console.error(JSON.stringify(err, null, 2));
+      // console.error(JSON.stringify(err, null, 2));
+      setError(err.errors[0].longMessage);
     }
   };
 
@@ -45,20 +48,36 @@ export default function SignUpScreen() {
 
       await setActive({ session: completeSignUp.createdSessionId });
     } catch (err) {
-      console.error(JSON.stringify(err, null, 2));
+      // setError(console.error(JSON.stringify(err, null, 2)));
     }
   };
+
+  console.log("err", error);
 
   return (
     <View>
       {!pendingVerification && (
         <View>
+          <Text style={{ color: "red", padding: 20 }}>{error}</Text>
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              marginBottom: 30,
+            }}
+          >
+            <Text style={styles.title}>Sign Up</Text>
+          </View>
           <View>
             <TextInput
               autoCapitalize="none"
               value={emailAddress}
               placeholder="Email..."
+              style={styles.input}
+              mode="outlined"
               onChangeText={(email) => setEmailAddress(email)}
+              outlineColor="#F3CFC6"
+              activeOutlineColor="pink"
             />
           </View>
 
@@ -69,12 +88,33 @@ export default function SignUpScreen() {
               placeholderTextColor="#000"
               secureTextEntry={true}
               onChangeText={(password) => setPassword(password)}
+              style={styles.input}
+              mode="outlined"
+              activeOutlineColor="pink"
+              outlineColor="#F3CFC6"
             />
           </View>
 
-          <TouchableOpacity onPress={onSignUpPress}>
+          <Button
+            style={styles.button}
+            mode="contained"
+            onPress={onSignUpPress}
+          >
             <Text>Sign up</Text>
-          </TouchableOpacity>
+          </Button>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: 20,
+            }}
+          >
+            <Text style={{ textAlign: "center" }}>Already have an account</Text>
+            <Button mode="text" textColor="#E37383" onPress={onSignIn}>
+              Press me
+            </Button>
+          </View>
         </View>
       )}
       {pendingVerification && (
@@ -94,3 +134,19 @@ export default function SignUpScreen() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  input: {
+    width: 300,
+    marginBottom: 30,
+    backgroundColor: "transparent",
+  },
+  title: {
+    fontSize: 30,
+    fontWeight: "bold",
+    color: "#FFB6C1",
+  },
+  button: {
+    backgroundColor: "#FFB6C1",
+  },
+});

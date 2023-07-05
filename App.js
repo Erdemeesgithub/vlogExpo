@@ -10,8 +10,7 @@ import { PaperProvider } from "react-native-paper";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/clerk-expo";
-import SignUpScreen from "./Components/SignupScreen";
-import SignInScreen from "./Components/SignInScreen";
+import { LoginFlow } from "./Components/LoginFlow";
 
 export default function App() {
   const Drawer = createDrawerNavigator();
@@ -37,8 +36,7 @@ export default function App() {
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
         >
-          <SignUpScreen />
-          {/* <SignInScreen /> */}
+          <LoginFlow></LoginFlow>
         </View>
       </SignedOut>
     </ClerkProvider>
