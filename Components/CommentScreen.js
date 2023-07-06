@@ -37,7 +37,7 @@ export function Comments({ route }) {
     <ScrollView>
       {comments.map((comment) => (
         <>
-          <Card style={{ marginBottom: 20 }}>
+          <Card style={{ marginBottom: 20 }} key={comment.id}>
             <View>
               <Image
                 source={comment.user.profile_image}

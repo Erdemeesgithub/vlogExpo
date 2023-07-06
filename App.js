@@ -1,6 +1,6 @@
 import "react-native-gesture-handler";
 import * as React from "react";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Home } from "./Components/HomeScreen";
@@ -11,7 +11,9 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/clerk-expo";
 import { LoginFlow } from "./Components/LoginFlow";
-import { Profile } from "./Components/ProfileScreen";
+import { ProfileScreen } from "./Components/ProfileScreen";
+import { Card } from "react-native-paper";
+import { useUser } from "@clerk/clerk-expo";
 
 export default function App() {
   const Drawer = createDrawerNavigator();
@@ -24,8 +26,8 @@ export default function App() {
           <NavigationContainer>
             <Drawer.Navigator>
               <Drawer.Screen
-                name="Tab"
-                component={Tab}
+                name="Stack"
+                component={Stack}
                 options={{ headerShown: false }}
               />
               <Drawer.Screen name="Article" component={Article} />
@@ -48,11 +50,7 @@ function Tab() {
   const Tab = createBottomTabNavigator();
   return (
     <Tab.Navigator>
-      <Tab.Screen
-        name="Stack"
-        component={Stack}
-        options={{ headerShown: false }}
-      />
+      <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Settings" component={SettingsScreen} />
       <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
@@ -78,9 +76,57 @@ function Stack() {
   const Stack = createNativeStackNavigator();
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen
+        name="Home"
+        component={Tab}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen name="Details" component={Details} />
       <Stack.Screen name="Comments" component={Comments} />
+      <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
     </Stack.Navigator>
+  );
+}
+// function ProfileStack() {
+//   const Stack = createNativeStackNavigator();
+//   return (
+//     <Stack.Navigator>
+
+//     </Stack.Navigator>
+//   );
+
+// }
+
+function Profile({ navigation }) {
+  const { user } = useUser();
+  return (
+    <TouchableOpacity
+      onPress={() => {
+        navigation.navigate("ProfileScreen");
+      }}
+    >
+      <View style={{ alignItems: "center", marginTop: 20 }}>
+        <Card style={{ width: 370 }}>
+          <View
+            style={{
+              flexDirection: "row",
+              gap: 20,
+              padding: 20,
+            }}
+          >
+            <Image
+              source={require("./assets/1.jpeg")}
+              style={{ width: 50, height: 50, borderRadius: 100 }}
+            ></Image>
+            <View style={{ justifyContent: "center" }}>
+              <Text style={{ fontWeight: "bold", fontSize: 17 }}>Username</Text>
+              <Text style={{ color: "gray", fontSize: 14 }}>
+                {user.primaryEmailAddress.emailAddress}
+              </Text>
+            </View>
+          </View>
+        </Card>
+      </View>
+    </TouchableOpacity>
   );
 }
