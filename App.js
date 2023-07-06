@@ -11,6 +11,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/clerk-expo";
 import { LoginFlow } from "./Components/LoginFlow";
+import { Profile } from "./Components/ProfileScreen";
 
 export default function App() {
   const Drawer = createDrawerNavigator();
@@ -23,7 +24,7 @@ export default function App() {
           <NavigationContainer>
             <Drawer.Navigator>
               <Drawer.Screen
-                name="Home"
+                name="Tab"
                 component={Tab}
                 options={{ headerShown: false }}
               />
@@ -48,11 +49,12 @@ function Tab() {
   return (
     <Tab.Navigator>
       <Tab.Screen
-        name="Home"
+        name="Stack"
         component={Stack}
         options={{ headerShown: false }}
       />
       <Tab.Screen name="Settings" component={SettingsScreen} />
+      <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );
 }

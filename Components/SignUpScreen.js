@@ -59,7 +59,7 @@ export default function SignUpScreen({ onSignIn }) {
       {!pendingVerification && (
         <View>
           <View style={{ justifyContent: "center", alignItems: "center" }}>
-            <Text style={{ color: "red", padding: 20 }}>{error}</Text>{" "}
+            <Text style={{ color: "red", padding: 20 }}>{error}</Text>
           </View>
           <View
             style={{
