@@ -25,11 +25,23 @@ export default function SignInScreen() {
       await setActive({ session: completeSignIn.createdSessionId });
     } catch (err) {
       console.error(JSON.stringify(err, null, 2));
+      setError(err.errors[0].longMessage);
     }
   };
 
   return (
     <View>
+      <View style={{ justifyContent: "center", alignItems: "center" }}>
+        <Text
+          style={{
+            color: "red",
+            padding: 20,
+          }}
+        >
+          {error}
+        </Text>
+      </View>
+
       <View
         style={{
           justifyContent: "center",
@@ -76,9 +88,9 @@ export default function SignInScreen() {
           marginTop: 20,
         }}
       >
-        <Text style={{ textAlign: "center" }}>Don't have an account</Text>
+        <Text style={{ textAlign: "center" }}>Don't have an account?</Text>
         <Button mode="text" textColor="#E37383">
-          Press me
+          Sign Up
         </Button>
       </View>
     </View>

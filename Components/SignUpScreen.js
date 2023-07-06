@@ -58,7 +58,9 @@ export default function SignUpScreen({ onSignIn }) {
     <View>
       {!pendingVerification && (
         <View>
-          <Text style={{ color: "red", padding: 20 }}>{error}</Text>
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <Text style={{ color: "red", padding: 20 }}>{error}</Text>{" "}
+          </View>
           <View
             style={{
               justifyContent: "center",
@@ -110,9 +112,11 @@ export default function SignUpScreen({ onSignIn }) {
               marginTop: 20,
             }}
           >
-            <Text style={{ textAlign: "center" }}>Already have an account</Text>
+            <Text style={{ textAlign: "center" }}>
+              Already have an account?
+            </Text>
             <Button mode="text" textColor="#E37383" onPress={onSignIn}>
-              Press me
+              Sign In
             </Button>
           </View>
         </View>
